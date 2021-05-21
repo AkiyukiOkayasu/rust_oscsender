@@ -1,0 +1,11 @@
+[package]
+name = "rust_oscsender"
+version = "0.1.0"
+authors = ["AkiyukiOkayasu <akiyuki.okayasu@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+eframe = "0.12.0"
+nannou_osc = "0.16.0"
