@@ -26,11 +26,20 @@ impl epi::App for OscSenderApp {
         let Self { value, sender } = self;
 
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.heading("OSC sender");
-            ui.add(egui::Slider::new(value, 0.0..=10.0).text("value"));
-            if ui.button("oscsend").clicked() {
+            ui.heading("OSC Sender localhost port:8080");
+
+            if ui
+                .add(egui::Slider::new(value, 0.0..=10.0).text("/slider"))
+                .dragged()
+            {
+                let addr = "/slider";
+                let args = vec![Type::Float(*value)];
+                sender.send((addr, args)).ok();
+            };
+
+            if ui.button("/button").clicked() {
                 // Send OSC
-                let addr = "/test";
+                let addr = "/button";
                 let args = vec![Type::Int(1)];
                 sender.send((addr, args)).ok();
             }
@@ -39,7 +48,8 @@ impl epi::App for OscSenderApp {
 }
 
 fn main() {
-    let sender = osc::sender().unwrap().connect("127.0.0.1:8080").unwrap();
+    const IP_PORT: &str = "127.0.0.1:8080";
+    let sender = osc::sender().unwrap().connect(IP_PORT).unwrap();
     let app = OscSenderApp::new(sender);
     let native_options = eframe::NativeOptions::default();
     eframe::run_native(Box::new(app), native_options);
